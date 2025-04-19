@@ -23,4 +23,9 @@ class Apartment extends Model
         'latitude', 
         'longitude'
     ];
+
+    public function ownerships()
+    {
+        return $this->morphMany(OwnedProperty::class, 'ownable');
+    }
 }

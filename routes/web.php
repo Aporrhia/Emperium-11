@@ -6,11 +6,14 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
-
-// Public Routes
+// Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Properties
 Route::get('/properties', [PropertyController::class, 'properties'])->name('properties');
-Route::get('/properties/{id}', [PropertyController::class, 'show'])->name('properties.show');
+Route::get('/businesses', [PropertyController::class, 'businesses'])->name('businesses');
+Route::get('/property/{id}/{type}', [PropertyController::class, 'show'])->name('property.show')->middleware('auth');
+Route::post('/property/{id}/buy', [PropertyController::class, 'buy'])->name('property.buy')->middleware('auth');
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

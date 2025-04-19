@@ -18,25 +18,25 @@
             <a href="{{ route('properties') }}" class="block relative bg-cover bg-center h-96 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
                 <!-- Background Image with Overlay -->
                 <div class="absolute inset-0 bg-black opacity-40"></div>
-                <img src="https://placehold.co/600x400?text=Iconic+Office" alt="Iconic Offices" class="w-full h-full object-cover">
+                <img src="https://placehold.co/600x400?text=Iconic+Property" alt="Iconic Property" class="w-full h-full object-cover">
                 <!-- Text Overlay -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
                     <h2 class="text-3xl font-bold text-white mb-2">EMPERIUM 11 PROPERTY</h2>
-                    <p class="text-xl text-yellow-400 font-semibold">CHECK OUT OUR NEW RANGE OF ICONIC OFFICES</p>
+                    <p class="text-xl text-yellow-400 font-semibold">CHECK OUT OUR NEW RANGE OF ICONIC PROPERTY</p>
                 </div>
             </a>
         </div>
 
         <!-- For Businesses -->
         <div>
-            <a href="/apartments" class="block relative bg-cover bg-center h-96 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+            <a href="{{ route('businesses') }}" class="block relative bg-cover bg-center h-96 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
                 <!-- Background Image with Overlay -->
                 <div class="absolute inset-0 bg-black opacity-40"></div>
-                <img src="https://placehold.co/600x400?text=Iconic+Office" alt="Iconic Offices" class="w-full h-full object-cover">
+                <img src="https://placehold.co/600x400?text=Iconic+Office" alt="Iconic Businesses" class="w-full h-full object-cover">
                 <!-- Text Overlay -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                    <h2 class="text-3xl font-bold text-white mb-2">EMPERIUM 11 OFFICES</h2>
-                    <p class="text-xl text-yellow-400 font-semibold">CHECK OUT OUR NEW RANGE OF ICONIC OFFICES</p>
+                    <h2 class="text-3xl font-bold text-white mb-2">EMPERIUM 11 BUSINESSES</h2>
+                    <p class="text-xl text-yellow-400 font-semibold">CHECK OUT OUR NEW RANGE OF ICONIC BUSINESSES</p>
                 </div>
             </a>
         </div>

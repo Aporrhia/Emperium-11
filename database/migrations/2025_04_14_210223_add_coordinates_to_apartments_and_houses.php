@@ -9,13 +9,13 @@ class AddCoordinatesToApartmentsAndHouses extends Migration
     public function up()
     {
         Schema::table('apartments', function (Blueprint $table) {
-            $table->decimal('latitude', 9, 6)->nullable()->after('images');
-            $table->decimal('longitude', 9, 6)->nullable()->after('latitude');
+            $table->decimal('latitude', 9, 3)->nullable()->after('images');
+            $table->decimal('longitude', 9, 3)->nullable()->after('latitude');
         });
 
         Schema::table('houses', function (Blueprint $table) {
-            $table->decimal('latitude', 9, 6)->nullable()->after('images');
-            $table->decimal('longitude', 9, 6)->nullable()->after('latitude');
+            $table->decimal('latitude', 9, 3)->nullable()->after('images');
+            $table->decimal('longitude', 9, 3)->nullable()->after('latitude');
         });
     }
 

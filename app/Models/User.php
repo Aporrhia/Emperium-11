@@ -43,4 +43,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function stats()
+    {
+        return $this->hasOne(UserStats::class);
+    }
+
+    public function ownedProperties()
+    {
+        return $this->hasMany(OwnedProperty::class);
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->stats()->create([
+                'balance' => 0,
+                'total_income' => 0,
+                'total_expenses' => 0,
+            ]);
+        });
+    }
 }

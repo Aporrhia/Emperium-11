@@ -1,6 +1,5 @@
 <div id="map" class="w-full h-[600px] rounded-lg"></div>
 
-<!-- Initialize Map -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Define the bounds of the map image (0,0 is bottom-left, 2000,2000 is top-right)
@@ -16,7 +15,7 @@
             attributionControl: false
         });
 
-        // Use the satellite map image from storage
+        // Use the GTA V satellite map image from storage
         var imageUrl = '{{ asset('storage/GTAV_satellite_map.jpg') }}';
         L.imageOverlay(imageUrl, bounds).addTo(map);
 
@@ -27,7 +26,7 @@
         var minZoom = map.getBoundsZoom(bounds, true);
         map.setMinZoom(minZoom);
 
-         // Debugging window to display coordinates
+        // Create a custom control to display coordinates
         var CoordinatesControl = L.Control.extend({
             onAdd: function(map) {
                 var container = L.DomUtil.create('div', 'leaflet-control-coordinates leaflet-bar leaflet-control');
@@ -35,7 +34,7 @@
                 container.style.padding = '5px 10px';
                 container.style.borderRadius = '5px';
                 container.style.fontSize = '12px';
-                container.innerHTML = 'Lat: 0, Lng: 0';
+                container.innerHTML = 'Lat: 0, Lng: 0 (Scaled: 0, 0)';
                 return container;
             }
         });
@@ -47,25 +46,28 @@
         map.on('mousemove', function(e) {
             var lat = e.latlng.lat.toFixed(2);
             var lng = e.latlng.lng.toFixed(2);
-            coordinatesControl.getContainer().innerHTML = `Lat: ${lat}, Lng: ${lng}`;
+            var scaledLat = (lat / 2000 * 100).toFixed(2);
+            var scaledLng = (lng / 2000 * 100).toFixed(2);
+            coordinatesControl.getContainer().innerHTML = `Lat: ${lat}, Lng: ${lng} (Scaled: ${scaledLat}, ${scaledLng})`;
         });
 
-        // Or clear coordinates when mouse leaves the map
+        // Clear coordinates when mouse leaves the map
         map.on('mouseout', function() {
-            coordinatesControl.getContainer().innerHTML = 'Lat: 0, Lng: 0';
+            coordinatesControl.getContainer().innerHTML = 'Lat: 0, Lng: 0 (Scaled: 0, 0)';
         });
 
-
-        // Markers for each property
+        // Add markers for each property
         var properties = @json($properties);
         var selectedId = {{ request('id') ? request('id') : 'null' }};
-        var propertyArray = Object.values(properties.data);
+        var selectedType = '{{ request('type') ?? null }}';
+        var propertyArray = Object.values(properties);
 
         propertyArray.forEach(function(property) {
             if (property.latitude && property.longitude) {
-                console.log(`Property: ${property.title}, Coordinates: [${property.latitude}, ${property.longitude}]`); // Debugging
-                var isSelected = property.id == selectedId;
+                console.log(`Property: ${property.title}, Coordinates: [${property.latitude}, ${property.longitude}]`);
+                var isSelected = property.id == selectedId && property.type === selectedType;
                 var markerColor = isSelected ? '#4682B4' : '#87CEEB';
+
                 var marker = L.marker([property.latitude, property.longitude], {
                     icon: L.divIcon({
                         className: 'custom-marker',
@@ -74,9 +76,9 @@
                                 <path fill="${markerColor}" d="M32 5a21 21 0 0 0-21 21c0 17 21 33 21 33s21-16 21-33A21 21 0 0 0 32 5zm0 31a10 10 0 1 1 10-10 10 10 0 0 1-10 10z"/>
                             </svg>
                         `,
-                        iconSize: [32, 32], 
+                        iconSize: [32, 32],
                         iconAnchor: [16, 32],
-                        popupAnchor: [0, -24]
+                        popupAnchor: [0, -32]
                     })
                 }).addTo(map);
 
@@ -84,7 +86,7 @@
                     <b>${property.title}</b><br>
                     ${property.location}<br>
                     $${new Intl.NumberFormat().format(property.price)}<br>
-                    <a href="${window.location.pathname}?id=${property.id}">View Details</a>
+                    <a href="${window.location.pathname}?id=${property.id}&type=${property.type}">View Details</a>
                 `, {
                     offset: [0, 0]
                 });
@@ -104,7 +106,7 @@
 
         // Center the map if no property is selected
         if (!selectedId) {
-            map.setView([1000, 1000], minZoom); // Center with minimum zoom level
+            map.setView([1000, 1000], minZoom);
         }
     });
 </script>

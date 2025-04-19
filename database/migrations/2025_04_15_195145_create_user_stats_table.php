@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_stats', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Need to fix
-            // $table->int('balance')->default(0);
-            // $table->int('total_income')->default(0);
-            // $table->int('total_expenses')->default(0);
+            $table->bigInteger('user_id')->unsiged();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->decimal('balance', 10, 2)->default(0);
+            $table->decimal('total_income', 10, 2)->default(0);
+            $table->decimal('total_expenses', 10, 2)->default(0);
             $table->timestamps();
         });
     }
