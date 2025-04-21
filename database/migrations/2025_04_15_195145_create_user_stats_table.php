@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_stats', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsiged();
+
+            $table->unsignedBigInteger('user_id')->unsiged();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->decimal('balance', 10, 2)->default(0);
+
+            $table->decimal('balance', 20, 2)->default(0);
             $table->decimal('total_income', 10, 2)->default(0);
             $table->decimal('total_expenses', 10, 2)->default(0);
             $table->timestamps();

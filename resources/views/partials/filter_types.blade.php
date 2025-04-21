@@ -1,4 +1,4 @@
-<div class="mb-8">
+<div class="mb-6">
     <!-- Filter Buttons -->
     <div class="flex flex-wrap gap-3">
         <!-- All Button -->

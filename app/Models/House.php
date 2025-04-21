@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 class House extends Model
 {
     use HasFactory;
@@ -24,7 +26,7 @@ class House extends Model
         'longitude'
     ];
 
-    public function ownerships()
+    public function ownerships(): MorphMany
     {
         return $this->morphMany(OwnedProperty::class, 'ownable');
     }

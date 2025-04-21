@@ -13,8 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             FakerSeeder::class,
-            HouseSeeder::class,
-            ApartmentSeeder::class,
+            RaceSeeder::class,
         ]);
     }
 }

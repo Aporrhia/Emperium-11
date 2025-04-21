@@ -1,15 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative bg-cover bg-center h-64" style="background-image: url('https://placehold.co/1200x400?text=Ocean+View')">
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold text-white">EMPERIUM 11</h1>
-            <p class="text-xl text-white mt-2">The best move you'll ever make</p>
-        </div>
-    </div>
-</div>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

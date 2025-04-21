@@ -67,14 +67,44 @@ class PropertyController extends Controller
             }
         }
 
+
+        if ($request->filter_type === 'house' || $request->filter_type === 'apartment') {
+            if ($request->has('price_category') && $request->price_category !== 'all') {
+                $priceCategory = $request->price_category;
+
+                foreach ($queries as $query) {
+                    if ($priceCategory === 'low-end') {
+                        $query->where('price', '<', 60000);
+                    } elseif ($priceCategory === 'medium') {
+                        $query->whereBetween('price', [60000, 200000]);
+                    } elseif ($priceCategory === 'high-end') {
+                        $query->where('price', '>', 200000);
+                    }
+                }
+            }
+        }
+
         // Execute queries and combine results
         $properties = collect();
         foreach ($queries as $query) {
             $properties = $properties->concat($query->get());
         }
 
-        // Sort by title
-        $properties = $properties->sortBy('title');
+        // Apply sorting (if provided in URL or session)
+        $sortOption = $request->input('sort', session('sort_option', 'title')); // Default to 'title'
+
+        // Save the sort option in the session if it was provided in the URL
+        if ($request->has('sort')) {
+            session(['sort_option' => $sortOption]);
+        }
+
+        if ($sortOption === 'price-low-to-high') {
+            $properties = $properties->sortBy('price');
+        } elseif ($sortOption === 'price-high-to-low') {
+            $properties = $properties->sortByDesc('price');
+        } else {
+            $properties = $properties->sortBy('title');
+        }
 
         return view('properties.properties', compact('properties', 'types', 'title'));
     }
@@ -114,11 +144,11 @@ class PropertyController extends Controller
         $type = $request->input('type');
         $property = null;
         $user = Auth::user();
+        
         if (!$user) {
             return redirect()->route('login')->with('error', 'You need to be logged in to purchase a property.');
         }
         
-
         if ($type === 'apartment') {
             $property = Apartment::findOrFail($id);
         } elseif ($type === 'house') {
@@ -133,27 +163,27 @@ class PropertyController extends Controller
             $property = Facility::findOrFail($id);
         }
 
-        // if ($user->stats->balance < $property->price) {
-        //     return redirect()->back()->with('error', 'Insufficient balance to purchase this property.');
-        // }
+        if ($user->stats->balance < $property->price) {
+            return redirect()->back()->with('error', 'Insufficient balance to purchase this property.');
+        }
 
         if (!$property) {
             abort(404, 'Property not found');
         }
 
-        // // Create an ownership record
-        // $user = auth()->user();
-        // $user->ownedProperties()->create([
-        //     'ownable_id' => $property->id,
-        //     'ownable_type' => get_class($property),
-        // ]);
+        // Create an ownership record
+        $user = auth()->user();
+        $user->ownedProperties()->create([
+            'ownable_id' => $property->id,
+            'ownable_type' => get_class($property),
+        ]);
 
-        // // Update user stats (example: deduct price from balance)
-        // $user->stats()->update([
-        //     'balance' => $user->stats->balance - $property->price,
-        //     'total_expenses' => $user->stats->total_expenses + $property->price,
-        // ]);
+        // Update user stats (example: deduct price from balance)
+        $user->stats()->update([
+            'balance' => $user->stats->balance - $property->price,
+            'total_expenses' => $user->stats->total_expenses + $property->price,
+        ]);
 
-        return redirect()->route('properties')->with('success', 'Property purchased successfully!');
+        return redirect()->route('home')->with('success', 'Property purchased successfully!');
     }
 }

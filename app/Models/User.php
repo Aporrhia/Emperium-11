@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -19,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'timezone'
     ];
 
     /**
@@ -44,23 +47,38 @@ class User extends Authenticatable
         ];
     }
 
-    public function stats()
+    public function stats(): HasOne
     {
         return $this->hasOne(UserStats::class);
     }
 
-    public function ownedProperties()
+    public function ownedProperties(): HasMany
     {
         return $this->hasMany(OwnedProperty::class);
+    }
+    
+    public function privacySetting()
+    {
+        return $this->hasOne(PrivacySetting::class);
+    }
+
+    public function bids(): HasMany
+    {
+        return $this->hasMany(Bid::class);
     }
 
     protected static function booted()
     {
         static::created(function ($user) {
             $user->stats()->create([
-                'balance' => 0,
+                'balance' => 1000000,
                 'total_income' => 0,
                 'total_expenses' => 0,
+            ]);
+
+            $user->privacySetting()->create([
+                'show_in_tier_list' => true,
+                'hide_personal_info' => false,
             ]);
         });
     }

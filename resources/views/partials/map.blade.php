@@ -16,7 +16,7 @@
         });
 
         // Use the GTA V satellite map image from storage
-        var imageUrl = '{{ asset('storage/GTAV_satellite_map.jpg') }}';
+        var imageUrl = '{{ asset('storage/map/GTAV_satellite_map.jpg') }}';
         L.imageOverlay(imageUrl, bounds).addTo(map);
 
         // Calculate the zoom level to fit the image exactly

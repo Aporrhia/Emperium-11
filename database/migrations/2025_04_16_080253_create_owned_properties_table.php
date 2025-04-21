@@ -10,7 +10,7 @@ class CreateOwnedPropertiesTable extends Migration
     {
         Schema::create('owned_properties', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsiged();
+            $table->unsignedBigInteger('user_id')->unsiged();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->morphs('ownable');
             $table->timestamps();

@@ -20,7 +20,7 @@ class FakerSeeder extends Seeder
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 500, 5000),
+                'price' => $faker->randomFloat(2, 150000, 950000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'apartment',
@@ -35,7 +35,7 @@ class FakerSeeder extends Seeder
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 1000, 10000),
+                'price' => $faker->randomFloat(2, 30000, 1250000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'house',
@@ -45,12 +45,12 @@ class FakerSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             DB::table('offices')->insert([
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 2000, 20000),
+                'price' => $faker->randomFloat(2, 750000, 2300000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'office',
@@ -60,12 +60,12 @@ class FakerSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             DB::table('warehouses')->insert([
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 5000, 50000),
+                'price' => $faker->randomFloat(2, 1300000, 2500000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'warehouse',
@@ -75,12 +75,12 @@ class FakerSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             DB::table('bunkers')->insert([
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 10000, 100000),
+                'price' => $faker->randomFloat(2, 1300000, 2800000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'bunker',
@@ -90,12 +90,12 @@ class FakerSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             DB::table('facilities')->insert([
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph(),
                 'location' => $faker->city(),
-                'price' => $faker->randomFloat(2, 15000, 150000),
+                'price' => $faker->randomFloat(2, 1800000, 3200000),
                 'latitude' => $faker->randomFloat(2, 1, 2000),
                 'longitude' => $faker->randomFloat(2, 1, 2000),
                 'type' => 'facility',
@@ -105,21 +105,21 @@ class FakerSeeder extends Seeder
             ]);
         }
 
-        $classes = ['car', 'motorcycle', 'boat', 'aircraft'];
-        $manufacturers = ['Luxor', 'Vapid', 'Dinka', 'Pegassi'];
+        // $classes = ['car', 'motorcycle', 'boat', 'aircraft'];
+        // $manufacturers = ['Luxor', 'Vapid', 'Dinka', 'Pegassi'];
 
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('transport')->insert([
-                'title' => $faker->sentence(2),
-                'description' => $faker->paragraph(),
-                'price' => $faker->randomFloat(2, 500, 50000),
-                'class' => $faker->randomElement($classes),
-                'manufacturer' => $faker->randomElement($manufacturers),
-                'type' => 'transport',
-                'images' => $faker->imageUrl(640, 480, 'vehicle'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        // for ($i = 0; $i < 10; $i++) {
+        //     DB::table('transport')->insert([
+        //         'title' => $faker->sentence(2),
+        //         'description' => $faker->paragraph(),
+        //         'price' => $faker->randomFloat(2, 500, 50000),
+        //         'class' => $faker->randomElement($classes),
+        //         'manufacturer' => $faker->randomElement($manufacturers),
+        //         'type' => 'transport',
+        //         'images' => $faker->imageUrl(640, 480, 'vehicle'),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        // }
     }
 }
