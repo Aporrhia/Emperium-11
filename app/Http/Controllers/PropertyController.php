@@ -71,14 +71,14 @@ class PropertyController extends Controller
         if ($request->filter_type === 'house' || $request->filter_type === 'apartment') {
             if ($request->has('price_category') && $request->price_category !== 'all') {
                 $priceCategory = $request->price_category;
-
+    
                 foreach ($queries as $query) {
                     if ($priceCategory === 'low-end') {
-                        $query->where('price', '<', 60000);
+                        $query->where('price', '<', 99999);
                     } elseif ($priceCategory === 'medium') {
-                        $query->whereBetween('price', [60000, 200000]);
+                        $query->whereBetween('price', [100000, 299999]);
                     } elseif ($priceCategory === 'high-end') {
-                        $query->where('price', '>', 200000);
+                        $query->where('price', '>', 300000);
                     }
                 }
             }
