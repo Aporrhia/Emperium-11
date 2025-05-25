@@ -18,6 +18,8 @@ Route::get('/properties', [PropertyController::class, 'properties'])->name('prop
 Route::get('/businesses', [PropertyController::class, 'businesses'])->name('businesses');
 Route::get('/property/{id}/{type}', [PropertyController::class, 'show'])->name('property.show')->middleware('auth');
 Route::post('/property/{id}/buy', [PropertyController::class, 'buy'])->name('property.buy')->middleware('auth');
+Route::get('/properties/sell', [PropertyController::class, 'sell'])->name('properties.sell');
+Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
 
 // Tier List
 Route::get('/tier-list', [TierListController::class, 'index'])->name('tier.list');

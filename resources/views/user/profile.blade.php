@@ -120,9 +120,9 @@
                         $property = $ownedProperty->ownable;
                     @endphp
                     <div class="bg-gray-50 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                        <img src="{{ $property->images ?? 'https://placehold.co/300x200?text=Property' }}"
-                             alt="{{ $property->title }}"
-                             class="w-full h-40 object-cover rounded-md mb-4">
+                        <img src="{{ !empty($property->images) && isset($property->images[0]) ? Storage::url($property->images[0]) : 'https://placehold.co/300x200?text=Property' }}"
+                            alt="{{ $property->title }}"
+                            class="w-full h-40 object-cover rounded-md mb-4">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ $property->title }}</h3>
                         <p class="text-gray-600 mb-1"><span class="font-medium">Location:</span> {{ $property->location }}</p>
                         <p class="text-gray-600 mb-1"><span class="font-medium">Type:</span> {{ ucfirst($property->type) }}</p>

@@ -12,13 +12,19 @@
 
             <!-- Navigation Links and Profile Dropdown -->
             <div class="flex items-center space-x-4">
-                <a href="{{ route('races') }}" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md font-medium">
-                    Horse Track
-                </a>
+                @auth
+                    <a href="{{ route('races') }}" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md font-medium">
+                        Horse Track
+                    </a>
 
-                <a href="{{ route('tier.list') }}" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md font-medium">
-                    Tier List
-                </a>
+                    <a href="{{ route('properties.sell') }}" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md font-medium">
+                        Sell Property
+                    </a>
+
+                    <a href="{{ route('tier.list') }}" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md font-medium">
+                        Tier List
+                    </a>
+                @endauth
 
                 <!-- Profile Dropdown -->
                 <div class="relative">

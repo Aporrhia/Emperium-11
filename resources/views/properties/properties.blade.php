@@ -1,3 +1,4 @@
+<!-- resources/views/properties/properties.blade.php -->
 @extends('layouts.app')
 
 @use('App\Models\Apartment')
@@ -46,21 +47,19 @@
             @else
                 @foreach ($properties as $property)
                     @php
-                        $type = $property instanceof \App\Models\Apartment ? 'apartment' :
-                                ($property instanceof \App\Models\House ? 'house' :
-                                ($property instanceof \App\Models\Office ? 'office' :
-                                ($property instanceof \App\Models\Bunker ? 'bunker' :
-                                ($property instanceof \App\Models\Warehouse ? 'warehouse' :
-                                ($property instanceof \App\Models\Facility ? 'facility' : '')))));
-                                
-                        $isOwned = Auth::check() && Auth::user()->ownedProperties->contains(function ($ownedProperty) use ($property) {
-                            return $ownedProperty->ownable_id === $property->id && $ownedProperty->ownable_type === get_class($property);
+                        // Determine the type and ownership
+                        $type = $property->type; // Already mapped in displayProperties (e.g., 'house', 'apartment')
+                        $isFromSoldProperties = in_array($type, ['house', 'apartment']);
+                        $isOwned = Auth::check() && Auth::user()->ownedProperties->contains(function ($ownedProperty) use ($property, $isFromSoldProperties) {
+                            return $isFromSoldProperties
+                                ? ($ownedProperty->ownable_id === $property->id && $ownedProperty->ownable_type === 'sold_property')
+                                : ($ownedProperty->ownable_id === $property->id && $ownedProperty->ownable_type === get_class($property));
                         });
                     @endphp
                     <a href="{{ request()->routeIs('properties') ? route('properties', ['id' => $property->id, 'type' => $type]) : route('businesses', ['id' => $property->id, 'type' => $type]) }}"
                         class="block p-4 border-b last:border-b-0 hover:bg-gray-100 transition">
                         <!-- Image: Full width -->
-                        <img src="{{ $property->images ?? 'https://placehold.co/100x100?text=Property' }}"
+                        <img src="{{ $isFromSoldProperties ? (isset($property->images) && !empty(json_decode($property->images, true)) ? asset('storage/' . json_decode($property->images, true)[0]) : 'https://placehold.co/100x100?text=Property') : ($property->images ?? 'https://placehold.co/100x100?text=Property') }}"
                             alt="{{ $property->title }}"
                             class="w-full h-40 object-cover rounded-lg mb-4">
 
@@ -128,16 +127,24 @@
                 @if ($selectedProperty)
                     <div class="mt-6">
                         <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
-                            <img src="{{ $selectedProperty->images ?? 'https://placehold.co/600x400?text=Property' }}" alt="{{ $selectedProperty->title }}" class="w-full lg:w-1/3 h-48 object-cover rounded-lg">
+                            <img src="{{ in_array($selectedProperty->type, ['house', 'apartment']) ? (isset($selectedProperty->images) && !empty(json_decode($selectedProperty->images, true)) ? asset('storage/' . json_decode($selectedProperty->images, true)[0]) : 'https://placehold.co/600x400?text=Property') : ($selectedProperty->images ?? 'https://placehold.co/600x400?text=Property') }}"
+                                alt="{{ $selectedProperty->title }}"
+                                class="w-full lg:w-1/3 h-48 object-cover rounded-lg">
                             <div class="flex-1">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ $selectedProperty->title }}</h2>
                                 <p class="text-gray-600">Location: {{ $selectedProperty->location }}</p>
+                                @if (in_array($selectedProperty->type, ['house', 'apartment']))
+                                    <p class="text-gray-600">Size: {{ $selectedProperty->size }} sq ft</p>
+                                    <p class="text-gray-600">Seller: {{ $selectedProperty->seller_type === 'emperium' ? 'Emperium 11' : ($selectedProperty->seller_id ? \DB::table('users')->where('id', $selectedProperty->seller_id)->value('name') : 'Unknown') }}</p>
+                                @endif
                                 <p class="text-gray-900 font-bold">Full price: ${{ number_format($selectedProperty->price) }}</p>
                                 <p class="text-gray-900 font-bold mb-4">Rent price: ${{ number_format($selectedProperty->price * 0.011) }}/month</p>
                                 @if (Auth::check())
                                     @php
                                         $isOwned = Auth::check() && Auth::user()->ownedProperties->contains(function ($ownedProperty) use ($selectedProperty) {
-                                            return $ownedProperty->ownable_id === $selectedProperty->id && $ownedProperty->ownable_type === get_class($selectedProperty);
+                                            return in_array($selectedProperty->type, ['house', 'apartment'])
+                                                ? ($ownedProperty->ownable_id === $selectedProperty->id && $ownedProperty->ownable_type === 'sold_property')
+                                                : ($ownedProperty->ownable_id === $selectedProperty->id && $ownedProperty->ownable_type === get_class($selectedProperty));
                                         });
                                     @endphp
                                     @if ($isOwned)
@@ -145,10 +152,13 @@
                                             Owned
                                         </span>
                                     @else
-                                        <a href="{{ route('property.show', ['id' => $selectedProperty->id, 'type' => $selectedProperty->type]) }}"
-                                        class="inline-block bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                                            View Details
-                                        </a>
+                                        <form action="{{ route('property.buy', $selectedProperty->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <input type="hidden" name="type" value="{{ $selectedProperty->type }}">
+                                            <button type="submit" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                                                Buy Now
+                                            </button>
+                                        </form>
                                     @endif
                                 @else
                                     <p class="text-gray-600">Please <a href="{{ route('login') }}" class="text-blue-600 hover:underline">log in</a> to view full details and buy this property.</p>
