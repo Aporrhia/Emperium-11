@@ -25,7 +25,6 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Create the user in the database
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -35,7 +34,6 @@ class RegisterController extends Controller
         // Log the user in after registration
         auth()->login($user);
 
-        // Redirect to the homepage
         return redirect()->route('home')->with('success', 'Registration successful!');
     }
 }

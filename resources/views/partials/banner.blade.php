@@ -8,7 +8,7 @@
     } elseif (Route::is('profile')) {
         $path = asset($user->stats->banner ?? 'https://placehold.co/');
     } else {
-        $path = 'https://placehold.co/1200x400?text=Default+Banner';
+        $path = asset('storage/banner/property-banner.png');
     }
 @endphp
 
