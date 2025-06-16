@@ -148,6 +148,8 @@ class PropertyController extends Controller
                 DB::raw('address as location'),
                 'price',
                 'size',
+                'latitude',
+                'longitude',
                 'seller_type',
                 'seller_id',
                 'images'

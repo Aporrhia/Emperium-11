@@ -59,10 +59,15 @@
                     <a href="{{ request()->routeIs('properties') ? route('properties', ['id' => $property->id, 'type' => $type]) : route('businesses', ['id' => $property->id, 'type' => $type]) }}"
                         class="block p-4 border-b last:border-b-0 hover:bg-gray-100 transition">
                         <!-- Image: Full width -->
-                        <img src="{{ $isFromSoldProperties ? (isset($property->images) && !empty(json_decode($property->images, true)) ? asset('storage/' . json_decode($property->images, true)[0]) : 'https://placehold.co/100x100?text=Property') : ($property->images ?? 'https://placehold.co/100x100?text=Property') }}"
-                            alt="{{ $property->title }}"
-                            class="w-full h-40 object-cover rounded-lg mb-4">
-
+                        @if (Str::startsWith($property->images, ['http://', 'https://']))
+                            <img src="{{$property->images}}"
+                                alt="{{ $property->title }}"
+                                class="w-full h-40 object-cover rounded-lg mb-4">
+                        @else
+                            <img src="{{ $isFromSoldProperties ? (isset($property->images) && !empty(json_decode($property->images, true)) ? asset('storage/' . json_decode($property->images, true)[0]) : 'https://placehold.co/100x100?text=Property') : ($property->images ?? 'https://placehold.co/100x100?text=Property') }}"
+                                alt="{{ $property->title }}"
+                                class="w-full h-40 object-cover rounded-lg mb-4">
+                        @endif
                         <!-- Property Info -->
                         <div class="mb-1">
                             <h3 class="text-lg font-semibold text-gray-900">{{ $property->title }}</h3>
@@ -127,15 +132,21 @@
                 @if ($selectedProperty)
                     <div class="mt-6">
                         <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
-                            <img src="{{ in_array($selectedProperty->type, ['house', 'apartment']) ? (isset($selectedProperty->images) && !empty(json_decode($selectedProperty->images, true)) ? asset('storage/' . json_decode($selectedProperty->images, true)[0]) : 'https://placehold.co/600x400?text=Property') : ($selectedProperty->images ?? 'https://placehold.co/600x400?text=Property') }}"
-                                alt="{{ $selectedProperty->title }}"
-                                class="w-full lg:w-1/3 h-48 object-cover rounded-lg">
+                            @if (Str::startsWith($property->images, ['http://', 'https://']))
+                                <img src="{{$property->images}}"
+                                    alt="{{ $selectedProperty->title }}"
+                                    class="w-full lg:w-1/3 h-48 object-cover rounded-lg">
+                            @else
+                                <img src="{{ $isFromSoldProperties ? (isset($property->images) && !empty(json_decode($property->images, true)) ? asset('storage/' . json_decode($property->images, true)[0]) : 'https://placehold.co/100x100?text=Property') : ($property->images ?? 'https://placehold.co/100x100?text=Property') }}"
+                                    alt="{{ $selectedProperty->title }}"
+                                    class="w-full lg:w-1/3 h-48 object-cover rounded-lg">
+                            @endif
                             <div class="flex-1">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ $selectedProperty->title }}</h2>
                                 <p class="text-gray-600">Location: {{ $selectedProperty->location }}</p>
                                 @if (in_array($selectedProperty->type, ['house', 'apartment']))
                                     <p class="text-gray-600">Size: {{ $selectedProperty->size }} sq ft</p>
-                                    <p class="text-gray-600">Seller: {{ $selectedProperty->seller_type === 'emperium' ? 'Emperium 11' : ($selectedProperty->seller_id ? \DB::table('users')->where('id', $selectedProperty->seller_id)->value('name') : 'Unknown') }}</p>
+                                    <p class="text-gray-600">Seller: {{ $selectedProperty->seller_type === 'emperium' ? 'Emperium 11' : ($selectedProperty->seller_id ? \DB::table('users')->where('id', $selectedProperty->seller_id)->value('name') : 'Emperium 11') }}</p>
                                 @endif
                                 <p class="text-gray-900 font-bold">Full price: ${{ number_format($selectedProperty->price) }}</p>
                                 <p class="text-gray-900 font-bold mb-4">Rent price: ${{ number_format($selectedProperty->price * 0.011) }}/month</p>

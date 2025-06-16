@@ -21,4 +21,8 @@ class Bunker extends Model
         'type',
         'images',
     ];
+    
+    protected $casts = [
+        'images' => 'array', 
+    ];
 }

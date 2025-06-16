@@ -21,4 +21,8 @@ class Facility extends Model
         'type',
         'images',
     ];
+    
+    protected $casts = [
+        'images' => 'array', 
+    ];
 }

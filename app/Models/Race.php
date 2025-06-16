@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Race extends Model
 {
+    use HasFactory;
     protected $fillable = ['start_time', 'status', 'distance', 'duration'];
 
     protected $casts = [

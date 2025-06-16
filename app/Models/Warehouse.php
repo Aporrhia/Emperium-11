@@ -21,4 +21,8 @@ class Warehouse extends Model
         'type',
         'images',
     ];
+    
+    protected $casts = [
+        'images' => 'array', 
+    ];
 }

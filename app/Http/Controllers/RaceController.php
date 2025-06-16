@@ -132,7 +132,7 @@ class RaceController extends Controller
 
         $userBalance = $user->stats->balance ?? 0;
         if ($userBalance < $amount) {
-            return redirect()->route('races.index')->with('error', 'Insufficient balance to place this bid.');
+            return redirect()->route('races.show', $race)->with('error', 'Insufficient balance to place this bid.');
         }
 
         DB::transaction(function () use ($user, $race, $horseId, $amount) {

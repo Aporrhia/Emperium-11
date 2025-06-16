@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Horse extends Model
 {
+    use HasFactory;
     protected $fillable = ['name', 'speed'];
 
     public function races()
