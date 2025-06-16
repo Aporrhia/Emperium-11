@@ -15,7 +15,7 @@ class RaceProposalTest extends TestCase
 {
     use RefreshDatabase;
 
-public function test_authenticated_user_can_place_bid_on_race()
+public function test_authenticated_user_can_make_proposal_on_race()
     {
         $user = User::factory()->create();
         $stats = UserStats::factory()->create([
@@ -47,7 +47,7 @@ public function test_authenticated_user_can_place_bid_on_race()
         ]);
     }
 
-    public function test_user_cannot_bid_twice_on_same_race_and_horse()
+    public function test_user_cannot_make_proposal_twice_on_same_race_and_horse()
     {
         $user = User::factory()->create();
         UserStats::factory()->create([
@@ -79,7 +79,7 @@ public function test_authenticated_user_can_place_bid_on_race()
         $response->assertSessionHas('error');
     }
 
-    public function test_guest_cannot_place_bid()
+    public function test_guest_cannot_make_proposal()
     {
         $race = Race::factory()->create([
             'status' => 'upcoming',

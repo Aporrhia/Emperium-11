@@ -60,7 +60,7 @@
 
                         <!-- Total Income -->
                         <div class="flex-1 text-right">
-                            <p class="text-lg font-bold text-gray-900">
+                            <p class="text-lg font-bold text-gray-900 z-100">
                                 ${{ number_format($user->stats ? $user->stats->total_income : 0) }}
                             </p>
                             <p class="text-sm text-gray-500">Total Income</p>
